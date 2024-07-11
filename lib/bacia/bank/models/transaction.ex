@@ -1,9 +1,7 @@
 defmodule Bacia.Bank.Models.Transaction do
-  use Ecto.Schema
+  use Bacia, :model
 
   alias Bacia.Bank.Models.Customer
-
-  import Ecto.Changeset
 
   @required_fields ~w(
     amount
@@ -22,7 +20,7 @@ defmodule Bacia.Bank.Models.Transaction do
     belongs_to :receiver, Customer, foreign_key: :receiver_id
   end
 
-  @spec changeset(__MODULE__.t(), map) :: Ecto.Changeset.t()
+  @spec changeset(__MODULE__.t(), map) :: changeset
   def changeset(model, params) do
     model
     |> cast(params, @required_fields)
