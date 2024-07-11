@@ -51,7 +51,8 @@ defmodule Bacia.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:money, "~> 1.13.1"},
-      {:brcpfcnpj, "~> 1.0.0"}
+      {:brcpfcnpj, "~> 1.0.0"},
+      {:bcrypt_elixir, "~> 3.0"}
     ]
   end
 
