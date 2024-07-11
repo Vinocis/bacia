@@ -6,6 +6,7 @@ defmodule Bacia.Repo.Migrations.CreateCustomerTable do
       add :name, :string, null: false
       add :cpf, :string, null: false
       add :balance, :integer, default: 0
+      add :password_hash, :string, null: false
 
       timestamps()
     end
