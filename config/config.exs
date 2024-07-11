@@ -11,6 +11,9 @@ config :bacia,
   ecto_repos: [Bacia.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :money,
+  default_currency: :BRl
+
 # Configures the endpoint
 config :bacia, BaciaWeb.Endpoint,
   url: [host: "localhost"],
