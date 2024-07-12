@@ -14,6 +14,9 @@ config :bacia,
 config :money,
   default_currency: :BRl
 
+config :paper_trail,
+     repo: Bacia.Repo
+
 # Configures the endpoint
 config :bacia, BaciaWeb.Endpoint,
   url: [host: "localhost"],
