@@ -7,11 +7,11 @@ defmodule Bacia.Bank.Models.Customer do
     name
     cpf
     password
-  )
+  )a
 
   @optional_fields ~w(
     balance
-  )
+  )a
 
   @type t :: %__MODULE__{
     name: String.t(),
@@ -55,7 +55,7 @@ defmodule Bacia.Bank.Models.Customer do
   defp maybe_hash_password(%{valid?: true, changes: %{password: password}} = changeset) do
     hashed_password = Bcrypt.hash_pwd_salt(password)
 
-    change(changeset, %{hashed_password: hashed_password})
+    change(changeset, %{password_hash: hashed_password})
   end
 
   defp maybe_hash_password(changeset), do: changeset

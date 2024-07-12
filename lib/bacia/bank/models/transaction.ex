@@ -5,7 +5,7 @@ defmodule Bacia.Bank.Models.Transaction do
 
   @required_fields ~w(
     amount
-  )
+  )a
 
   @type t :: %__MODULE__{
     amount: Money.Ecto.Amount.Type, 
