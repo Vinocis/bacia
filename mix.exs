@@ -52,6 +52,7 @@ defmodule Bacia.MixProject do
       {:bandit, "~> 1.5"},
       {:money, "~> 1.13.1"},
       {:brcpfcnpj, "~> 1.0.0"},
+      {:ex_machina, "~> 2.8.0", only: :test},
       {:bcrypt_elixir, "~> 3.0"}
     ]
   end
