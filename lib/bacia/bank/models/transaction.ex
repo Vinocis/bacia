@@ -5,6 +5,8 @@ defmodule Bacia.Bank.Models.Transaction do
 
   @required_fields ~w(
     amount
+    sender_id
+    receiver_id
   )a
 
   @type t :: %__MODULE__{
