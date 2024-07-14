@@ -1,8 +1,8 @@
 defmodule Bacia.Bank.Models.CustomerTest do
-  alias Bacia.Factory
   use Bacia.DataCase
 
   alias Bacia.Bank.Models.Customer
+  alias Bacia.Factory
 
   describe "changeset/2" do
     test "hashes the customer password" do
