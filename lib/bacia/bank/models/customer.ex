@@ -30,6 +30,8 @@ defmodule Bacia.Bank.Models.Customer do
 
     has_many :sended_transactions, Transaction, foreign_key: :sender_id
     has_many :received_transactions, Transaction, foreign_key: :receiver_id
+
+    timestamps()
   end
 
   @spec changeset(__MODULE__.t(), map) :: changeset

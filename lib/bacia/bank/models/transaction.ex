@@ -18,6 +18,8 @@ defmodule Bacia.Bank.Models.Transaction do
 
     belongs_to :sender, Customer, foreign_key: :sender_id
     belongs_to :receiver, Customer, foreign_key: :receiver_id
+
+    timestamps()
   end
 
   @spec changeset(__MODULE__.t(), map) :: changeset
