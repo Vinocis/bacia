@@ -12,7 +12,7 @@ config :bacia,
   generators: [timestamp_type: :utc_datetime]
 
 config :money,
-  default_currency: :BRl
+  default_currency: :BRL
 
 config :paper_trail,
      repo: Bacia.Repo
