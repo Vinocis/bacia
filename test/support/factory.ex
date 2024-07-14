@@ -36,10 +36,14 @@ defmodule Bacia.Factory do
   def transaction_factory(attrs) do
     amount = Map.get(attrs, :amount, 100_00)
 
-    %Transaction{
+    transaction = %Transaction{
       amount: %Money{amount: amount, currency: :BRL},
       sender: build(:customer),
       receiver: build(:customer)
     }
+
+    transaction
+    |> merge_attributes(attrs)
+    |> evaluate_lazy_attributes()
   end
 end
