@@ -21,7 +21,7 @@ defmodule Bacia.Repo do
 
   @spec fetch_by(struct, non_neg_integer, list | keyword) :: {:error, String.t()} | {:ok, struct}
   def fetch_by(model, params, opts \\ []) do
-    case Repo.get_by(model, params, opts) do
+    case __MODULE__.get_by(model, params, opts) do
       nil ->
         {:error, "Entity not found"}  
 

@@ -8,7 +8,7 @@ defmodule Bacia.Bank.IO.Repo.Customer do
     %Customer{}
     |> Customer.changeset(attrs)
     |> PaperTrail.insert()
-    |> handle_paper_trail()
+    |> Repo.handle_paper_trail()
   end
 
   @spec update(Customer.t, map) :: {:ok, Customer.t()} | {:error, changeset}
@@ -16,14 +16,14 @@ defmodule Bacia.Bank.IO.Repo.Customer do
     model
     |> Customer.changeset(attrs)
     |> PaperTrail.update()
-    |> handle_paper_trail()
+    |> Repo.handle_paper_trail()
   end
 
   @spec delete(Customer.t) :: {:ok, Customer.t()} | {:error, changeset}
   def delete(model) do
     model
     |> PaperTrail.delete()
-    |> handle_paper_trail()
+    |> Repo.handle_paper_trail()
   end
 end
 

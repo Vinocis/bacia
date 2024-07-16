@@ -21,6 +21,9 @@ defmodule Bacia do
     quote do
       alias Bacia.Repo
 
+      defdelegate fetch_by(model, params, opts \\ []), to: Bacia.Repo
+      defdelegate fetch(model, id), to: Bacia.Repo
+
       @type changeset :: Ecto.Changeset.t()
     end
   end
