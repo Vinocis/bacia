@@ -25,4 +25,10 @@ defmodule Bacia.Bank.IO.Repo.Transaction do
     |> PaperTrail.delete()
     |> Repo.handle_paper_trail()
   end
+
+  @spec fetch(non_neg_integer()) :: {:ok, Transaction.t()} | {:error, bitstring()}
+  def fetch(id), do: Repo.fetch(Transaction, id)
+
+  @spec fetch_by(keyword()) :: {:ok, Transaction.t()} | {:error, bitstring()}
+  def fetch_by(params), do: Repo.fetch_by(Transaction, params)
 end
