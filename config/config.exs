@@ -17,6 +17,10 @@ config :money,
 config :paper_trail,
      repo: Bacia.Repo
 
+config :bacia, Bacia.Bank.Auth.Guardian,
+       issuer: "bacia",
+       secret_key: System.get_env("GUARDIAN_SECRET")
+    
 # Configures the endpoint
 config :bacia, BaciaWeb.Endpoint,
   url: [host: "localhost"],

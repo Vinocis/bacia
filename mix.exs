@@ -54,7 +54,8 @@ defmodule Bacia.MixProject do
       {:brcpfcnpj, "~> 1.0.0"},
       {:ex_machina, "~> 2.8.0", only: :test},
       {:bcrypt_elixir, "~> 3.0"},
-      {:paper_trail, "~> 0.14.3"}
+      {:paper_trail, "~> 0.14.3"},
+      {:guardian, "~> 2.3"}
     ]
   end
 
