@@ -5,13 +5,8 @@ defmodule Bacia.Repo do
 
   @spec handle_paper_trail({:ok, map} | {:error, Ecto.Changeset.t()}) :: {:ok, struct} | {:error, Ecto.Changeset.t()}
   def handle_paper_trail(result) do
-    case result do
-      {:ok, %{model: model}} ->
-        {:ok, model}
-
-      error ->
-        error
-    end
+    with {:ok, %{model: model}} <- result,
+      do: {:ok, model}
   end
 
   @spec fetch(struct, non_neg_integer) :: {:error, String.t()} | {:ok, struct}
