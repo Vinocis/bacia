@@ -7,6 +7,12 @@ defmodule Bacia do
   if it comes from the database, an external API or others.
   """
 
+  def service do
+    quote do
+      @behaviour Bacia.ServiceBehaviour
+    end
+  end
+
   def model do
     quote do
       use Ecto.Schema
