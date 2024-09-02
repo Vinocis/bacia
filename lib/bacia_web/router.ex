@@ -20,6 +20,13 @@ defmodule BaciaWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/customer", BaciaWeb.Bank do
+    pipe_through :api
+
+    post "/", CustomerController, :create
+    post "/sign_in", CustomerController, :sign_in
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", BaciaWeb do
   #   pipe_through :api

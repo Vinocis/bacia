@@ -5,8 +5,8 @@ defmodule Bacia.Bank.Services.CustomerAuthToken do
   alias Bacia.Bank.Auth.Guardian
 
   @spec process(map) :: {:ok, term()} | {:error, term()}
-  def process(%{"email" => email, "password" => password}) do
-    with {:ok, customer} <- CustomerRepo.fetch_by(%{email: email}),
+  def process(%{"cpf" => cpf, "password" => password}) do
+    with {:ok, customer} <- CustomerRepo.fetch_by(%{cpf: cpf}),
          true <- Bcrypt.verify_pass(password, customer.password_hash),
          {:ok, token, _claims} <- Guardian.encode_and_sign(customer) do
       {:ok, token}
