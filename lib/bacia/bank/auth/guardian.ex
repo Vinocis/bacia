@@ -1,5 +1,5 @@
 defmodule Bacia.Bank.Auth.Guardian do
-  use Guardian, otp_app: :my_app
+  use Guardian, otp_app: :bacia
 
   alias Bacia.Bank
 
