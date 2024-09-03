@@ -3,6 +3,8 @@ defmodule BaciaWeb.Bank.CustomerController do
 
   alias Bacia.Bank
 
+  action_fallback BaciaWeb.FallbackController
+
   def create(conn, params) do
     with {:ok, _customer} <- Bank.create_customer(params),
          do: send_resp(conn, 200, "Customer created")
