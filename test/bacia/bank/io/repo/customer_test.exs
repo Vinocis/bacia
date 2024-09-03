@@ -1,9 +1,7 @@
-
 defmodule Bacia.Bank.IO.Repo.CustomerTest do
   use Bacia.DataCase
 
   alias Bacia.Bank.IO.Repo.Customer, as: CustomerRepo
-  alias Bacia.Bank.Models.Customer
 
   describe "insert/1" do
     test "insert the customer with valid params" do
@@ -42,10 +40,10 @@ defmodule Bacia.Bank.IO.Repo.CustomerTest do
   describe "delete/1" do
     test "deletes the customer" do
       customer = Factory.insert(:customer, name: "Fulano")
-      {:ok, target} = CustomerRepo.fetch(Customer, customer.id)
+      {:ok, target} = CustomerRepo.fetch(customer.id)
 
       assert {:ok, _target} = CustomerRepo.delete(target)
-      assert {:error, "Entity not found"} == CustomerRepo.fetch(Customer, customer.id)
+      assert {:error, "Entity not found"} == CustomerRepo.fetch(customer.id)
     end
   end
 end

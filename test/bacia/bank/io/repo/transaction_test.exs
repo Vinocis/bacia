@@ -2,7 +2,6 @@ defmodule Bacia.Bank.IO.Repo.TransactionTest do
   use Bacia.DataCase
 
   alias Bacia.Bank.IO.Repo.Transaction, as: TransactionRepo
-  alias Bacia.Bank.Models.Transaction
 
   describe "insert/1" do
     test "insert the transaction with valid params" do
@@ -45,10 +44,10 @@ defmodule Bacia.Bank.IO.Repo.TransactionTest do
   describe "delete/1" do
     test "deletes the transaction" do
       transaction = Factory.insert(:transaction)
-      {:ok, target} = TransactionRepo.fetch(Transaction, transaction.id)
+      {:ok, target} = TransactionRepo.fetch(transaction.id)
 
       assert {:ok, _target} = TransactionRepo.delete(target)
-      assert {:error, "Entity not found"} == TransactionRepo.fetch(Transaction, transaction.id)
+      assert {:error, "Entity not found"} == TransactionRepo.fetch(transaction.id)
     end
   end
 end
