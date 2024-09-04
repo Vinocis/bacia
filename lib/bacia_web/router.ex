@@ -14,6 +14,10 @@ defmodule BaciaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_auth do
+    plug BaciaWeb.Plugs.Guardian.AuthAccessPipeline
+  end
+
   scope "/", BaciaWeb do
     pipe_through :browser
 
