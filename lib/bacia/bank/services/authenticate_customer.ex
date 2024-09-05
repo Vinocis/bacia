@@ -1,4 +1,4 @@
-defmodule Bacia.Bank.Services.CustomerAuthToken do
+defmodule Bacia.Bank.Services.AuthenticateCustomer do
   use Bacia, :service
 
   alias Bacia.Bank.IO.Repo.Customer, as: CustomerRepo

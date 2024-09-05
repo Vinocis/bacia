@@ -29,6 +29,12 @@ defmodule BaciaWeb.Router do
 
     post "/", CustomerController, :create
     post "/sign_in", CustomerController, :sign_in
+
+    scope "/" do
+      pipe_through :jwt_auth
+
+      get "/balance", CustomerController, :show_balance
+    end
   end
 
   # Other scopes may use custom stacks.

@@ -11,7 +11,11 @@ defmodule BaciaWeb.Bank.CustomerController do
   end
 
   def sign_in(conn, params) do
-    with {:ok, token} <- Bank.gen_customer_token(params),
+    with {:ok, token} <- Bank.authenticate_customer(params),
          do: render(conn, :sign_in, token: token)
+  end
+
+  def show_balance(conn, _params) do
+    send_resp(conn, 200, "Valid Token")
   end
 end

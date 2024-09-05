@@ -15,11 +15,11 @@ config :money,
   default_currency: :BRL
 
 config :paper_trail,
-     repo: Bacia.Repo
+  repo: Bacia.Repo
 
 config :bacia, Bacia.Bank.Auth.Guardian,
-       issuer: "bacia",
-       secret_key: System.get_env("GUARDIAN_SECRET")
+  issuer: "bacia",
+  secret_key: System.get_env("GUARDIAN_SECRET")
     
 # Configures the endpoint
 config :bacia, BaciaWeb.Endpoint,
