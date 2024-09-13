@@ -13,6 +13,8 @@ defmodule Bacia.Bank.Services.AuthenticateCustomer do
     end
   end
 
+  def process(_params), do: {:error, :invalid_params}
+
   defp check_pass(password, password_hash) do
     if Bcrypt.verify_pass(password, password_hash),
       do: :ok,

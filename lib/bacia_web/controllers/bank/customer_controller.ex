@@ -7,15 +7,21 @@ defmodule BaciaWeb.Bank.CustomerController do
 
   def create(conn, params) do
     with {:ok, _customer} <- Bank.create_customer(params),
-         do: send_resp(conn, 200, "Customer created")
+         do: send_resp(conn, 201, "Customer created")
   end
 
   def sign_in(conn, params) do
     with {:ok, token} <- Bank.authenticate_customer(params),
-         do: render(conn, :sign_in, token: token)
+         do: render(conn, :render, token: token)
   end
 
   def show_balance(conn, _params) do
-    send_resp(conn, 200, "Valid Token")
+    balance = 
+      conn
+      |> Guardian.Plug.current_resource()
+      |> Map.get(:balance)
+      |> Map.get(:amount)
+
+    render(conn, :render, balance: balance)
   end
 end
