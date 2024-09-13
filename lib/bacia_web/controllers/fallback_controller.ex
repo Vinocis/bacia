@@ -15,7 +15,7 @@ defmodule BaciaWeb.FallbackController do
     conn
     |> put_status(422)
     |> put_view(ChangesetJSON)
-    |> render(:error, changeset: changeset)
+    |> render(:"422", changeset: changeset)
   end
 
   def call(conn, {:error, _error}) do
