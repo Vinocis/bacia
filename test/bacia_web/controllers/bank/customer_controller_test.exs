@@ -13,7 +13,7 @@ defmodule BaciaWeb.Bank.CustomerControllerTest do
       assert conn.resp_body == "Customer created"
     end
 
-    test "Status code 422 when data is valid", %{conn: conn} do
+    test "Status code 422 when data is not valid", %{conn: conn} do
       customer = Factory.params_for(:customer, cpf: "")
       conn = post(conn, ~p"/customer", customer)
 
