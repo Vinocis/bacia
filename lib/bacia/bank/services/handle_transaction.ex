@@ -5,43 +5,53 @@ defmodule Bacia.Bank.Services.HandleTransaction do
   alias Bacia.Bank.Models.Customer, as: CustomerModel
   alias Bacia.Bank.Models.Transaction, as: TransactionModel
 
-  def process(%{
-    sender: %Customer{balance: %Money{amount: sender_balance}} = sender,
-    receiver: %Customer{balance: %Money{amount: receiver_balance}} = receiver,
+  def process(%{sender: _, receiver: _, amount: _} = transaction_data) do
+    with {:ok, changesets} <- build_changesets(transaction_data) do
+      Ecto.Multi.new()
+      |> PaperTrail.Multi.update(changesets.sender_changeset, [model_key: :sender, version_key: :sender_version])
+      |> PaperTrail.Multi.update(changesets.receiver_changeset, [model_key: :receiver, version_key: :receiver_version])
+      |> PaperTrail.Multi.insert(changesets.transaction_changeset, [model_key: :transaction, version_key: :transaction_version])
+      |> Repo.transaction()
+    end
+  end
+
+  defp build_changesets(%{
+    sender: %CustomerModel{balance: %Money{amount: sender_balance}} = sender,
+    receiver: %CustomerModel{balance: %Money{amount: receiver_balance}} = receiver,
     amount: amount
   }) do
-  end
-  with {:ok, new_sender_balance} <- handle_balance(sender, amount) do
-    sender_changeset =
-      CustomerModel.changeset(sender, %{balance: new_sender_balance})
-    receiver_changeset =
-      CustomerModel.changeset(receiver, %{balance: Money.new(receiver_balance + amount)})
 
-    transaction_changeset = transaction_changeset(sender, receiver, amount)
+    with {:ok, new_sender_balance} <- handle_balance(sender_balance, amount) do
+      sender_changeset =
+        CustomerModel.changeset(sender, %{balance: new_sender_balance})
+      receiver_changeset =
+        CustomerModel.changeset(receiver, %{balance: Money.new(receiver_balance + amount)})
+      transaction_changeset = transaction_changeset(sender, receiver, amount)
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:sender, sender_changeset)
-    |> Ecto.Multi.update(:receiver, receiver_changeset)
-    |> Ecto.Multi.insert(:transaction, transaction_changeset)
-    |> Repo.transaction()
-  end
-
-  defp handle_balance(sender, sended_amount) do
-    balance = sender.balance.amount 
-
-    if balance >= sended_amount,
-      do: {:ok, Money.new(balance - sended_amount)},
-      else: {:error, :insufficient_balance}
+      {
+        :ok,
+        %{
+          sender_changeset: sender_changeset,
+          receiver_changeset: receiver_changeset,
+          transaction_changeset: transaction_changeset
+        }
+      }
+    end
   end
 
   defp transaction_changeset(sender, receiver, amount) do
-    TransactionModel.changeset(
-      %TransactionModel{},
+    TransactionModel.changeset(%TransactionModel{},
       %{
         amount: Money.new(amount),
         sender_id: sender.id,
         receiver_id: receiver.id,
       }
     )
+  end
+
+  defp handle_balance(sender_balance, sended_amount) do
+    if sender_balance >= sended_amount,
+      do: {:ok, Money.new(sender_balance - sended_amount)},
+      else: {:error, :insufficient_balance}
   end
 end
