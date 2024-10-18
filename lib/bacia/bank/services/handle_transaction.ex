@@ -5,6 +5,7 @@ defmodule Bacia.Bank.Services.HandleTransaction do
   alias Bacia.Bank.Models.Customer, as: CustomerModel
   alias Bacia.Bank.Models.Transaction, as: TransactionModel
 
+  @spec process(map) :: {:ok, term} | {:error, term}
   def process(%{sender: _, receiver: _, amount: _} = transaction_data) do
     with {:ok, changesets} <- build_changesets(transaction_data) do
       Ecto.Multi.new()
