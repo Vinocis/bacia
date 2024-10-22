@@ -2,6 +2,8 @@ defmodule Bacia.Bank.Consumers.Transaction do
   use GenStage
 
   alias Bacia.Bank.Producers.Transaction, as: TransactionProducer
+  alias Bacia.Bank.Services.HandleTransaction
+
 
   def start_link() do
     GenStage.start_link(__MODULE__, :ok, name: __MODULE__)

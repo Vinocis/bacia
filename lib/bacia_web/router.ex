@@ -34,7 +34,7 @@ defmodule BaciaWeb.Router do
       pipe_through :jwt_auth
 
       get "/balance", CustomerController, :show_balance
-      post "/transaction", TransactionControllerController, :create
+      post "/transaction", TransactionController, :create
     end
   end
 

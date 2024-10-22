@@ -7,7 +7,7 @@ defmodule BaciaWeb.Bank.TransactionController do
 
   def create(conn, params) do
     with sender <- Guardian.Plug.current_resource(conn),
-         attrs <- Map.put(params, "sender", sender),
+         _attrs <- Map.put(params, "sender", sender),
          :ok <- Bank.submit_transaction(params),
       do: send_resp(conn, 201, "Transaction submitted")
   end

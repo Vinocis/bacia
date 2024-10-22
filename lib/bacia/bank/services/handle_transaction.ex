@@ -6,20 +6,35 @@ defmodule Bacia.Bank.Services.HandleTransaction do
   alias Bacia.Bank.Models.Transaction, as: TransactionModel
 
   @spec process(map) :: {:ok, term} | {:error, term}
-  def process(%{sender: _, receiver: _, amount: _} = transaction_data) do
+  def process(%{"sender" => _, "receiver" => _, "amount" => _} = transaction_data) do
     with {:ok, changesets} <- build_changesets(transaction_data) do
+      # TODO: A única camada que pode ter contato direto com o banco é a Repo,
+      # então tenho que refatorar esses multis aqui depois.
+      # 
+      # As vez da pra deixar assim tbm tem que ver.
       Ecto.Multi.new()
       |> PaperTrail.Multi.update(changesets.sender_changeset, [model_key: :sender, version_key: :sender_version])
       |> PaperTrail.Multi.update(changesets.receiver_changeset, [model_key: :receiver, version_key: :receiver_version])
       |> PaperTrail.Multi.insert(changesets.transaction_changeset, [model_key: :transaction, version_key: :transaction_version])
       |> Repo.transaction()
+      |> case do
+        {:ok, transfer} ->
+          {:ok, %{
+            sender: transfer.sender,
+            receiver: transfer.receiver,
+            transaction: transfer.transaction
+          }} 
+
+        {:error, _names, _value, _changes} = error ->
+          error
+      end
     end
   end
 
   defp build_changesets(%{
-    sender: %CustomerModel{balance: %Money{amount: sender_balance}} = sender,
-    receiver: %CustomerModel{balance: %Money{amount: receiver_balance}} = receiver,
-    amount: amount
+    "sender" => %CustomerModel{balance: %Money{amount: sender_balance}} = sender,
+    "receiver" => %CustomerModel{balance: %Money{amount: receiver_balance}} = receiver,
+    "amount" => amount
   }) do
 
     with {:ok, new_sender_balance} <- handle_balance(sender_balance, amount) do
@@ -27,7 +42,8 @@ defmodule Bacia.Bank.Services.HandleTransaction do
         CustomerModel.changeset(sender, %{balance: new_sender_balance})
       receiver_changeset =
         CustomerModel.changeset(receiver, %{balance: Money.new(receiver_balance + amount)})
-      transaction_changeset = transaction_changeset(sender, receiver, amount)
+      transaction_changeset = 
+        transaction_changeset(sender, receiver, amount)
 
       {
         :ok,
