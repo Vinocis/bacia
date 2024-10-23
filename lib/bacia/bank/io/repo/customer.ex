@@ -6,8 +6,8 @@ defmodule Bacia.Bank.IO.Repo.Customer do
 
   @spec insert(map) :: {:ok, Customer.t()} | {:error, changeset}
   def insert(attrs) do
-    %Customer{}
-    |> Customer.changeset(attrs)
+    attrs
+    |> Customer.changeset()
     |> PaperTrail.insert()
     |> Repo.handle_paper_trail()
   end

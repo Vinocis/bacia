@@ -43,7 +43,7 @@ defmodule Bacia.Bank.Services.HandleTransactionTest do
       assert sender.balance.amount == 0
       assert receiver.balance.amount == 0
 
-      assert {:error, _name, changeset, _changes} = HandleTransaction.process(params)
+      assert {:error, changeset} = HandleTransaction.process(params)
       assert errors_on(changeset) == %{amount: ["transaction amount must be greater than zero"]}
       refute changeset.valid?
     end

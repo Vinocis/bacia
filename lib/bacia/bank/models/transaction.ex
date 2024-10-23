@@ -24,6 +24,10 @@ defmodule Bacia.Bank.Models.Transaction do
     timestamps()
   end
 
+  @spec changeset(map) :: changeset
+  def changeset(params) when is_map(params), do: 
+    changeset(%__MODULE__{}, params)
+
   @spec changeset(__MODULE__.t(), map) :: changeset
   def changeset(model, params) do
     model
