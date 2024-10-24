@@ -18,6 +18,7 @@ defmodule Bacia.DataCase do
 
   using do
     quote do
+      alias Bacia.Factory
       alias Bacia.Repo
 
       import Ecto

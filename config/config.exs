@@ -11,6 +11,16 @@ config :bacia,
   ecto_repos: [Bacia.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :money,
+  default_currency: :BRL
+
+config :paper_trail,
+  repo: Bacia.Repo
+
+config :bacia, Bacia.Bank.Auth.Guardian,
+  issuer: "bacia",
+  secret_key: System.get_env("GUARDIAN_SECRET")
+    
 # Configures the endpoint
 config :bacia, BaciaWeb.Endpoint,
   url: [host: "localhost"],

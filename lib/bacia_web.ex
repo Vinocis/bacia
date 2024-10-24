@@ -42,6 +42,8 @@ defmodule BaciaWeb do
         formats: [:html, :json],
         layouts: [html: BaciaWeb.Layouts]
 
+      alias BaciaWeb.ViewJSON
+
       import Plug.Conn
       import BaciaWeb.Gettext
 

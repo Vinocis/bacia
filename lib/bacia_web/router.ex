@@ -14,10 +14,29 @@ defmodule BaciaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_auth do
+    plug BaciaWeb.Plugs.Guardian.AuthAccessPipeline
+  end
+
   scope "/", BaciaWeb do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/customer", BaciaWeb.Bank do
+    pipe_through :api
+
+    post "/", CustomerController, :create
+    post "/sign_in", CustomerController, :sign_in
+
+    scope "/" do
+      pipe_through :jwt_auth
+
+      get "/balance", CustomerController, :show_balance
+      patch "/deposit", CustomerController, :deposit
+      post "/transaction", TransactionController, :create
+    end
   end
 
   # Other scopes may use custom stacks.

@@ -17,7 +17,10 @@ defmodule Bacia.Application do
       # Start a worker by calling: Bacia.Worker.start_link(arg)
       # {Bacia.Worker, arg},
       # Start to serve requests, typically the last entry
-      BaciaWeb.Endpoint
+      BaciaWeb.Endpoint,
+      # Start transaction producer and consumer
+      Bacia.Bank.Producers.Transaction,
+      Bacia.Bank.Consumers.Transaction
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

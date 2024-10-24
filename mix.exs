@@ -49,7 +49,14 @@ defmodule Bacia.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:money, "~> 1.13.1"},
+      {:brcpfcnpj, "~> 1.0.0"},
+      {:ex_machina, "~> 2.8.0", only: :test},
+      {:bcrypt_elixir, "~> 3.0"},
+      {:paper_trail, "~> 0.14.3"},
+      {:guardian, "~> 2.3"},
+      {:gen_stage, "~> 1.0"}
     ]
   end
 
