@@ -12,6 +12,22 @@ defmodule BaciaWeb.Bank.CustomerController do
          |> send_resp(201, "Customer created")
   end
 
+  def update(conn, params) do
+    with customer <- Guardian.Plug.current_resource(conn),
+         {:ok, _customer} <- Bank.update_customer(customer, params),
+         do: conn
+         |> put_view(ViewJSON)
+         |> send_resp(201, "Customer updated")
+  end
+
+  def deposit(conn, %{"amount" => amount}) do
+    with customer <- Guardian.Plug.current_resource(conn),
+         {:ok, _customer} <- Bank.update_customer(customer, %{balance: Money.new(customer.balance.amount + amount)}),
+         do: conn
+         |> put_view(ViewJSON)
+         |> send_resp(201, "Deposit sucessful")
+  end
+
   def sign_in(conn, params) do
     with {:ok, token} <- Bank.authenticate_customer(params),
          do: conn

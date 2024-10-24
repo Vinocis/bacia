@@ -13,6 +13,12 @@ defmodule Bacia.Bank.Models.Customer do
     balance
   )a
 
+  @update_fields ~w(
+    name
+    password
+    balance
+  )a
+
   @type t :: %__MODULE__{
     name: String.t(),
     cpf: String.t(),
@@ -45,6 +51,13 @@ defmodule Bacia.Bank.Models.Customer do
     |> validate_required(@required_fields)
     |> validate_cpf()
     |> unique_constraint(:cpf)
+    |> maybe_hash_password()
+  end
+
+  @spec changeset(__MODULE__.t(), map) :: changeset
+  def update_changeset(model, params) do
+    model
+    |> cast(params, @update_fields)
     |> maybe_hash_password()
   end
   

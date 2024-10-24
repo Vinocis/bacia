@@ -15,7 +15,7 @@ defmodule Bacia.Bank.IO.Repo.Customer do
   @spec update(Customer.t, map) :: {:ok, Customer.t()} | {:error, changeset}
   def update(model, attrs) do
     model
-    |> Customer.changeset(attrs)
+    |> Customer.update_changeset(attrs)
     |> PaperTrail.update()
     |> Repo.handle_paper_trail()
   end
