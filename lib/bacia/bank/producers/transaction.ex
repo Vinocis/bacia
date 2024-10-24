@@ -8,7 +8,7 @@ defmodule Bacia.Bank.Producers.Transaction do
   def init(:ok), do: {:producer, :ok}
 
   def handle_call(message, _from, state) do
-    {:noreply, [message], state}
+    {:reply, :ok, [message], state}
   end
 
   def handle_demand(_demand, state) do

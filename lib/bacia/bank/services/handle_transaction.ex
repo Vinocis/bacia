@@ -9,11 +9,21 @@ defmodule Bacia.Bank.Services.HandleTransaction do
   def process(%{"sender" => _, "receiver" => _, "amount" => _} = transaction_data) do
     with {:ok, changesets} <- build_changesets(transaction_data),
          {:ok, entities} <- TransactionRepo.insert_transaction_multi(changesets) do
-        {:ok, %{
-          sender: entities.sender,
-          receiver: entities.receiver,
-          transaction: entities.transaction
-        }} 
+      # TODO: 
+      # Resolver esse problema do timeout quebrar a aplicação.
+      # Colocar os logs aqui
+      result = %{
+        sender: entities.sender,
+        receiver: entities.receiver,
+        transaction: entities.transaction
+      }
+
+      {:ok, result} 
+    else
+      {:error, _changeset} = error -> 
+        # TODO: 
+        # Colocar os logs de erro aqui
+        error
     end
   end
 
@@ -29,8 +39,8 @@ defmodule Bacia.Bank.Services.HandleTransaction do
 
       {:ok, 
         Map.new()
-        |> Map.put(:sender, CustomerModel.changeset(sender, sender_params))
-        |> Map.put(:receiver, CustomerModel.changeset(receiver, receiver_params))
+        |> Map.put(:sender, CustomerModel.update_changeset(sender, sender_params))
+        |> Map.put(:receiver, CustomerModel.update_changeset(receiver, receiver_params))
         |> Map.put(:transaction, TransactionModel.changeset(transaction_params))
       }
     end
