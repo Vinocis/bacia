@@ -1,4 +1,5 @@
 defmodule BaciaWeb.Bank.TransactionController do
+require Logger
   use BaciaWeb, :controller
 
   alias Bacia.Bank

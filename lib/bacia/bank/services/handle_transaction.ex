@@ -1,17 +1,19 @@
 defmodule Bacia.Bank.Services.HandleTransaction do
   use Bacia, :service
 
+  require Logger
+
+  alias Bacia.Common
+  alias Bacia.Bank.IO.Repo.Transaction, as: TransactionRepo
   alias Bacia.Bank.Models.Customer, as: CustomerModel
   alias Bacia.Bank.Models.Transaction, as: TransactionModel
-  alias Bacia.Bank.IO.Repo.Transaction, as: TransactionRepo
 
   @spec process(map) :: {:ok, term} | {:error, term}
   def process(%{"sender" => _, "receiver" => _, "amount" => _} = transaction_data) do
     with {:ok, changesets} <- build_changesets(transaction_data),
          {:ok, entities} <- TransactionRepo.insert_transaction_multi(changesets) do
-      # TODO: 
-      # Resolver esse problema do timeout quebrar a aplicação.
-      # Colocar os logs aqui
+      Logger.info("Transaction processed. Transaction ID: #{entities.transaction.id}")
+
       result = %{
         sender: entities.sender,
         receiver: entities.receiver,
@@ -20,9 +22,11 @@ defmodule Bacia.Bank.Services.HandleTransaction do
 
       {:ok, result} 
     else
-      {:error, _changeset} = error -> 
-        # TODO: 
-        # Colocar os logs de erro aqui
+      {:error, name, changeset} = error -> 
+        changeset_errors = Common.traverse_changeset_errors(changeset)
+
+        Logger.error("Transaction Failed. Invalid entity name: #{name}. Errors: #{changeset_errors}")
+
         error
     end
   end

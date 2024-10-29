@@ -4,6 +4,8 @@ defmodule Bacia.Bank do
   functionalities.
   """
 
+  require Logger
+
   alias Bacia.Bank.Producers.Transaction, as: TransactionProducer
   alias Bacia.Bank.Services.AuthenticateCustomer
   alias Bacia.Bank.IO.Repo.Customer, as: CustomerRepo
@@ -18,6 +20,8 @@ defmodule Bacia.Bank do
     with {:ok, _value} <- Map.fetch(message, "receiver"),
          {:ok, _value} <- Map.fetch(message, "sender"),
          {:ok, _value} <- Map.fetch(message, "amount") do
+      Logger.info("Transaction submited")
+
       GenStage.call(TransactionProducer, message)
     else
       :error ->
