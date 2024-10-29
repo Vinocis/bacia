@@ -26,6 +26,7 @@ defmodule Bacia.Bank.IO.Repo.Transaction do
     |> Repo.handle_paper_trail()
   end
 
+  @spec insert_transaction_multi(map) :: {:ok, atom(), map()} | {:ok, map()}
   def insert_transaction_multi(%{
     sender: sender, receiver: receiver, transaction: transaction
   }) do
@@ -35,8 +36,8 @@ defmodule Bacia.Bank.IO.Repo.Transaction do
     |> PaperTrail.Multi.insert(transaction, [model_key: :transaction, version_key: :transaction_version])
     |> Repo.transaction()
     |> case do
-      {:error, _name, changeset, _changes} ->
-        {:error, changeset}
+      {:error, name, changeset, _changes} ->
+        {:error, name, changeset}
 
       transaction ->
         transaction
