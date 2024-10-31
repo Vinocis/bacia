@@ -23,9 +23,17 @@ defmodule Bacia.Bank.Services.HandleTransaction do
       {:ok, result} 
     else
       {:error, name, changeset} = error -> 
-        changeset_errors = Common.traverse_changeset_errors(changeset)
+        changeset_errors = 
+          changeset
+          |> Common.traverse_changeset_errors()
+          |> Common.changeset_errors_to_string()
 
-        Logger.error("Transaction Failed. Invalid entity name: #{name}. Errors: #{changeset_errors}")
+        Logger.error("Transaction failed. Invalid entity name: #{name}. ERRORS: #{changeset_errors}")
+
+        error
+
+      {:error, reason} = error -> 
+        Logger.error("Transaction failed. Reason: #{reason}")
 
         error
     end

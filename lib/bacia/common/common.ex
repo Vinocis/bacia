@@ -17,4 +17,11 @@ defmodule Bacia.Common do
       end)
     end)
   end
+  
+  def changeset_errors_to_string(errors) do
+    Enum.reduce(errors, "", fn {k, v}, acc ->
+      joined_errors = Enum.join(v, "; ")
+      "#{acc}#{k}: #{joined_errors}\n"
+    end)
+  end
 end

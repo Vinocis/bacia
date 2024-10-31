@@ -15,6 +15,8 @@ config :money,
   default_currency: :BRL
 
 config :paper_trail,
+  item_type: :string,
+  originator_type: :string,
   repo: Bacia.Repo
 
 config :bacia, Bacia.Bank.Auth.Guardian,

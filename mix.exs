@@ -56,7 +56,8 @@ defmodule Bacia.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:paper_trail, "~> 0.14.3"},
       {:guardian, "~> 2.3"},
-      {:gen_stage, "~> 1.0"}
+      {:gen_stage, "~> 1.0"},
+      {:ecto_identifier, "~> 0.2.0"}
     ]
   end
 
