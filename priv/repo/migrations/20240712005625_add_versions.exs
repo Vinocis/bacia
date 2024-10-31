@@ -5,9 +5,9 @@ defmodule Repo.Migrations.AddVersions do
     create table(:versions) do
       add :event,        :string, null: false, size: 10
       add :item_type,    :string, null: false
-      add :item_id,      :integer
+      add :item_id,      :string
       add :item_changes, :map, null: false
-      add :originator_id, references(:customers)
+      add :originator_id, references(:customers, type: :string)
       add :origin,       :string, size: 50
       add :meta,         :map
       

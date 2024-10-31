@@ -2,7 +2,8 @@ defmodule Bacia.Repo.Migrations.CreateCustomerTable do
   use Ecto.Migration
 
   def change do
-    create table(:customers) do
+    create table(:customers, primary_key: false) do
+      add :id, :string, primary_key: true
       add :name, :string, null: false
       add :cpf, :string, null: false
       add :balance, :integer, default: 0

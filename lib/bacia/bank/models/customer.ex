@@ -27,6 +27,8 @@ defmodule Bacia.Bank.Models.Customer do
     password: String.t(),
   }
 
+  # TODO: adicionar esse @primary_key e o @foreign_key_type no quote do model
+  @primary_key {:id, :string, autogenerate: {Ecto.Nanoid, :autogenerate, []}}
   schema "customers" do
     field :name, :string
     field :cpf, :string    
@@ -54,7 +56,7 @@ defmodule Bacia.Bank.Models.Customer do
     |> maybe_hash_password()
   end
 
-  @spec changeset(__MODULE__.t(), map) :: changeset
+  @spec update_changeset(__MODULE__.t(), map) :: changeset
   def update_changeset(model, params) do
     model
     |> cast(params, @update_fields)
