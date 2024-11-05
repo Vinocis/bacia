@@ -1,8 +1,9 @@
 defmodule BaciaWeb.Bank.TransactionController do
-require Logger
   use BaciaWeb, :controller
 
   alias Bacia.Bank
+
+  require Logger
 
   action_fallback BaciaWeb.FallbackController
 
@@ -11,6 +12,17 @@ require Logger
          :ok <- Bank.submit_transaction(transaction) do
       send_resp(conn, 201, "Transaction submitted")
     end
+  end
+
+  def index(conn, _params) do
+    sended_transactions = 
+      conn
+      |> Guardian.Plug.current_resource()
+      |> Bank.list_sended_transactions()
+
+    conn 
+    |> put_view(ViewJSON)
+    |> render("transactions.json", transactions: sended_transactions)
   end
 
   defp build_transaction_params(conn, receiver_cpf, amount) do

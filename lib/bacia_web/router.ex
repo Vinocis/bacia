@@ -36,13 +36,9 @@ defmodule BaciaWeb.Router do
       get "/balance", CustomerController, :show_balance
       patch "/deposit", CustomerController, :deposit
       post "/transaction", TransactionController, :create
+      get "/transactions", TransactionController, :index
     end
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", BaciaWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:bacia, :dev_routes) do

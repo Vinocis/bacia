@@ -1,4 +1,5 @@
 defmodule Bacia.Bank.IO.Repo.Customer do
+  alias Bacia.Bank.Models.Transaction
   alias Bacia.Bank.IO.Repo.Customer
   use Bacia, :repo
 
@@ -25,6 +26,13 @@ defmodule Bacia.Bank.IO.Repo.Customer do
     model
     |> PaperTrail.delete()
     |> Repo.handle_paper_trail()
+  end
+
+  @spec list_sended_transactions(Customer.t) :: list(Transaction.t()) | [] 
+  def list_sended_transactions(customer) do
+    customer
+    |> Repo.preload(:sended_transactions)
+    |> Map.get(:sended_transactions)
   end
 
   @spec fetch(non_neg_integer()) :: {:ok, Customer.t()} | {:error, bitstring()}

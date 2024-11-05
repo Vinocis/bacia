@@ -15,6 +15,7 @@ defmodule Bacia.Bank do
   defdelegate create_customer(attrs), to: CustomerRepo, as: :insert
   defdelegate update_customer(customer, attrs), to: CustomerRepo, as: :update
   defdelegate authenticate_customer(attrs), to: AuthenticateCustomer, as: :process
+  defdelegate list_sended_transactions(customer), to: CustomerRepo
 
   def submit_transaction(message) do
     with {:ok, _value} <- Map.fetch(message, "receiver"),
