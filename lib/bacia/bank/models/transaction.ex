@@ -9,16 +9,20 @@ defmodule Bacia.Bank.Models.Transaction do
     receiver_id
   )a
 
+  @optional_fields ~w(
+    is_charged_back
+  )a
+
   @type t :: %__MODULE__{
     amount: Money.Ecto.Amount.Type, 
+    is_charged_back: boolean(),
     sender_id: non_neg_integer(),
     receiver_id: non_neg_integer()
   }
 
-  # TODO: adicionar esse @primary_key e o @foreign_key_type no quote do model
-  @primary_key {:id, :string, autogenerate: {Ecto.Nanoid, :autogenerate, []}}
   schema "transactions" do
     field :amount, Money.Ecto.Amount.Type
+    field :is_charged_back, :boolean, default: false
 
     belongs_to :sender, Customer, type: :string
     belongs_to :receiver, Customer, type: :string
@@ -33,7 +37,7 @@ defmodule Bacia.Bank.Models.Transaction do
   @spec changeset(__MODULE__.t(), map) :: changeset
   def changeset(model, params) do
     model
-    |> cast(params, @required_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> foreign_key_constraint(:sender_id)
     |> foreign_key_constraint(:receiver_id)

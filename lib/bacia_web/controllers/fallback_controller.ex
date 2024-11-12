@@ -1,4 +1,6 @@
 defmodule BaciaWeb.FallbackController do
+  # TODO:
+  # Criar callbacks pros outros erros que esqueci.
   use BaciaWeb, :controller
   
   alias BaciaWeb.ErrorJSON

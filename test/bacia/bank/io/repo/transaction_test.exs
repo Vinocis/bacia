@@ -9,7 +9,10 @@ defmodule Bacia.Bank.IO.Repo.TransactionTest do
       receiver = Factory.insert(:customer)
       attrs = Factory.params_for(:transaction, sender_id: sender.id, receiver_id: receiver.id)
 
-      assert {:ok, _transaction} = TransactionRepo.insert(attrs)
+      assert {:ok, transaction} = TransactionRepo.insert(attrs)
+      receiver = TransactionRepo.preload(transaction, :receiver)
+      IO.inspect(transaction, label: "TRANSACTION")
+      IO.inspect(receiver, label: "RECEIVER")
     end
 
     test "fails to insert transaction with invalid params" do

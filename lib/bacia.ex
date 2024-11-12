@@ -20,6 +20,7 @@ defmodule Bacia do
       import Ecto.Changeset
 
       @type changeset :: Ecto.Changeset.t()
+      @primary_key {:id, :string, autogenerate: {Ecto.Nanoid, :autogenerate, []}}
     end
   end
 
