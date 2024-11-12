@@ -37,6 +37,7 @@ defmodule BaciaWeb.Router do
       patch "/deposit", CustomerController, :deposit
       post "/transaction", TransactionController, :create
       get "/transactions", TransactionController, :index
+      patch "/transactions/chargeback/:id", TransactionController, :chargeback
     end
   end
 

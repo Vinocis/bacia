@@ -27,8 +27,6 @@ defmodule Bacia.Bank.Models.Customer do
     password: String.t(),
   }
 
-  # TODO: adicionar esse @primary_key e o @foreign_key_type no quote do model
-  @primary_key {:id, :string, autogenerate: {Ecto.Nanoid, :autogenerate, []}}
   schema "customers" do
     field :name, :string
     field :cpf, :string    

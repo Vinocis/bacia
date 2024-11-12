@@ -36,4 +36,11 @@ defmodule BaciaWeb.Bank.TransactionController do
       {:ok, transaction}
     end
   end
+
+  # Olha os repos antes de mexer aqui
+  def chargeback(conn, %{"id" => _transaction_id} = params) do
+    with :ok <- Bank.handle_chargeback(params) do
+      send_resp(conn, 201, "Transaction charged back")
+    end
+  end
 end

@@ -2,6 +2,9 @@ defmodule Bacia.Bank.IO.Repo.Transaction do
   use Bacia, :repo
 
   alias Bacia.Bank.Models.Transaction
+  alias Bacia.Bank.IO.Repo.Customer, as: CustomerRepo
+
+  defdelegate preload(transaction, preloads), to: Bacia.Repo
 
   @spec insert(map) :: {:ok, Transaction.t()} | {:error, changeset}
   def insert(attrs) do
@@ -26,14 +29,50 @@ defmodule Bacia.Bank.IO.Repo.Transaction do
     |> Repo.handle_paper_trail()
   end
 
-  @spec insert_transaction_multi(map) :: {:ok, atom(), map()} | {:ok, map()}
-  def insert_transaction_multi(%{
-    sender: sender, receiver: receiver, transaction: transaction
+  @spec register_transaction_multi(map) :: {:ok, map()} | {:error, atom(), map()}
+  def register_transaction_multi({
+    %{sender: sender, params: sender_params},
+    %{receiver: receiver, params: receiver_params},
+    %{transaction_params: transaction_params}
   }) do
     Ecto.Multi.new()
-    |> PaperTrail.Multi.update(sender, [model_key: :sender, version_key: :sender_version])
-    |> PaperTrail.Multi.update(receiver, [model_key: :receiver, version_key: :receiver_version])
-    |> PaperTrail.Multi.insert(transaction, [model_key: :transaction, version_key: :transaction_version])
+    |> CustomerRepo.update_sender_multi(sender, sender_params)
+    |> CustomerRepo.update_receiver_multi(receiver, receiver_params)
+    |> insert_multi(transaction_params)
+    |> Repo.transaction()
+    |> case do
+      {:error, name, changeset, _changes} ->
+        {:error, name, changeset}
+
+      transaction ->
+        transaction
+    end
+  end
+
+  @spec insert_multi(Ecto.Multi.t(), map()) :: Ecto.Multi.t()
+  def insert_multi(multi, attrs) do
+    changeset = Transaction.changeset(attrs)
+
+    PaperTrail.Multi.update(multi, changeset, [model_key: :transaction, version_key: :transaction_version])
+  end
+
+  @spec update_multi(Ecto.Multi.t(), Transaction.t(), map()) :: Ecto.Multi.t()
+  def update_multi(multi, transaction, attrs) do
+    changeset = Transaction.changeset(transaction, attrs)
+
+    PaperTrail.Multi.update(multi, changeset, [model_key: :transaction, version_key: :transaction_version])
+  end
+
+  @spec chargeback_multi(map()) :: {:ok, map()} | {:error, atom(), map()}
+  def chargeback_multi({
+    %{sender: sender, params: sender_params},
+    %{receiver: receiver, params: receiver_params},
+    %{transaction: transaction, params: transaction_params}
+  }) do
+    Ecto.Multi.new()
+    |> CustomerRepo.update_sender_multi(sender, sender_params)
+    |> CustomerRepo.update_receiver_multi(receiver, receiver_params)
+    |> update_multi(transaction, transaction_params)
     |> Repo.transaction()
     |> case do
       {:error, name, changeset, _changes} ->

@@ -20,8 +20,6 @@ defmodule Bacia.Bank.Models.Transaction do
     receiver_id: non_neg_integer()
   }
 
-  # TODO: adicionar esse @primary_key e o @foreign_key_type no quote do model
-  @primary_key {:id, :string, autogenerate: {Ecto.Nanoid, :autogenerate, []}}
   schema "transactions" do
     field :amount, Money.Ecto.Amount.Type
     field :is_charged_back, :boolean, default: false

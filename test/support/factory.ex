@@ -10,7 +10,7 @@ defmodule Bacia.Factory do
     customer = %Customer{
       name: "Jhon Doe",
       cpf: Brcpfcnpj.cpf_generate(),
-      balance: %Money{amount: 0, currency: :BRL}
+      balance: 0
     }
 
     customer
